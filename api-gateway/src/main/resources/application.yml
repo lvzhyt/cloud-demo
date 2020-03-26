@@ -1,0 +1,36 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: zuul
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+
+# 路由配置
+zuul:
+  routes:
+    uaa:
+      # 敏感信息 必需
+      sensitiveHeaders:
+      serviceId: oauth-server
+    pms:
+      sensitiveHeaders:
+      serviceId: product-server
+  add-proxy-headers: true
+
+security:
+  oauth2:
+    client:
+      # 授权地址
+      access-token-uri: http://localhost:9000/uaa/oauth/token
+      user-authorization-uri: http://localhost:9000/uaa/oauth/authorize
+      # 访问客户端 在auth-server中指定的
+      client-id: client_app
+    resource:
+      # 资源服务获取用户的地址
+      user-info-uri: http://localhost:9000/uaa/user
+      prefer-token-info: false
